@@ -48,8 +48,6 @@ class HexMap
         i++
       row_num++
 
-
-
 class Hex
   constructor: (map, x, y) ->
     @map = map
