@@ -1,17 +1,14 @@
-HexMap = (domID, width, height) ->
-  if not (this instanceof arguments.callee)
-    return new arguments.callee(arguments)
-  self = this
-  self.init = ->
-    self.width = width
-    self.height = height
-    self.paper = Raphael(domID, 960, 960)
+class HexMap
+  constructor: (domID, width, height) ->
+    @width = width
+    @height = height
+    @paper = Raphael(domID, 960, 960)
 
-  self.get_cords = ->
+  get_cords: ->
     num_cols = self.height
     num_rows = self.width
 
-  self.draw_grid = (map, rows, hex_size, columns) ->
+  draw_grid: (map, rows, hex_size, columns) ->
     row_num = 0
     while row_num < rows
       hexes = [  ]
@@ -40,20 +37,26 @@ HexMap = (domID, width, height) ->
         i++
       i = 0
       while i < hexes.length
-        hex = new Hex(map)
-        hex.draw map, hex_size, hexes[i].x, hexes[i].y
+        hex = new Hex(map, hexes[i].x, hexes[i].y)
+        drawn_hex = hex.draw(map, hex_size, hexes[i].x, hexes[i].y)
+        drawn_hex.attr fill: "#abcdef"
+        drawn_hex.paper.text hexes[i].x, hexes[i].y, row_num + "," + i
+
+        drawn_hex.click ->
+          @attr fill: "green"
+          console.log this
         i++
       row_num++
 
-  self.init()
-Hex = (map) ->
-  if not (this instanceof arguments.callee)
-    return new arguments.callee(arguments)
-  self = this
-  self.init = (map) ->
-    self.map = map
 
-  self.draw = (map, size, center_x, center_y) ->
+
+class Hex
+  constructor: (map, x, y) ->
+    @map = map
+    @x = x
+    @y = y
+
+  draw:  (map, size, center_x, center_y) ->
     p1_x = center_x - (size / 2)
     p1_y = center_y
     p2_x = p1_x + ((size / 2) / 2)
@@ -66,12 +69,9 @@ Hex = (map) ->
     p5_y = p4_y + (size / 2)
     p6_x = p5_x - (size / 2)
     p6_y = p5_y
-    return map.paper.path("M" + p1_x + " " + p1_y + "L" + p2_x + " " + p2_y + "L" + p3_x + " " + p3_y + "L" + p4_x + " " + p4_y + "L" + p5_x + " " + p5_y + "L" + p6_x + " " + p6_y + "L" + p1_x + " " + p1_y + "Z")hex.attr
-      stroke: "#000"
-      fill: "blue"
 
-  self.init map
+    return map.paper.path("M" + p1_x + " " + p1_y + "L" + p2_x + " " + p2_y + "L" + p3_x + " " + p3_y + "L" + p4_x + " " + p4_y + "L" + p5_x + " " + p5_y + "L" + p6_x + " " + p6_y + "L" + p1_x + " " + p1_y + "Z")
 
 jQuery ->
-  Hexmap = new HexMap("timeline", 9, 5)
-  Hexmap.draw_grid Hexmap, 8, 60, 20
+  window.Hexmap = new HexMap("timeline", 9, 5)
+  Hexmap.draw_grid window.Hexmap, 8, 60, 20
