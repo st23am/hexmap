@@ -4,10 +4,6 @@ class HexMap
     @height = height
     @paper = Raphael(domID, 960, 960)
 
-  get_cords: ->
-    num_cols = self.height
-    num_rows = self.width
-
   draw_grid: (map, rows, hex_size, columns) ->
     row_num = 0
     while row_num < rows
@@ -25,7 +21,6 @@ class HexMap
         prev_x = hexes[i - 1].x
         prev_y = hexes[i - 1].y
 
-
         if i % 2 is 0
           this_y = hexes[0].y
         else
@@ -41,7 +36,6 @@ class HexMap
         drawn_hex = hex.draw(map, hex_size, hexes[i].x, hexes[i].y)
         drawn_hex.attr fill: "#abcdef"
         drawn_hex.paper.text hexes[i].x, hexes[i].y, row_num + "," + i
-
         drawn_hex.click ->
           @attr fill: "green"
           console.log this
@@ -72,4 +66,4 @@ class Hex
 
 jQuery ->
   window.Hexmap = new HexMap("timeline", 9, 5)
-  Hexmap.draw_grid window.Hexmap, 8, 60, 20
+  Hexmap.draw_grid window.Hexmap, 15, 60, 20
