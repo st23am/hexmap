@@ -1,3 +1,7 @@
+vendor/ruby/1.9.1/gems
+vendor/ruby/1.9.1/specifications
+vendor/ruby/1.9.1/bin
+
 .bundle
 db/*.sqlite3
 log/*.log
