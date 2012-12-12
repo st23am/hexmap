@@ -31,9 +31,10 @@ class Grid
         drawn_hex = hex.draw(map, hex_size, hexes[i].x, hexes[i].y, 1)
         drawn_hex.attr fill: "#abcdef"
         drawn_hex.paper.text hexes[i].x - hex_size / 2, hexes[i].y, row_num + "," + i
+        drawn_hex.grid_location = "#{row_num}, #{i}"
         drawn_hex.click ->
           @attr fill: "green"
-          console.log this
+          console.log "Hex location: #{@grid_location} was clicked"
         i++
       row_num++
 
@@ -44,6 +45,7 @@ class Hex
     @cy = cy
     @x = x
     @y = y
+    @grid_location = ""
 
   draw:  (map, s, center_x, center_y, fact) ->
     size = s / 2 * fact
